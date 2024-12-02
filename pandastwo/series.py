@@ -1,22 +1,20 @@
 from abc import ABC
-from typing import Sequence, Type
+from typing import Self, Type
 
 
-class Series(ABC):
+class Series[LT](ABC):  # LT is a Generic Type for list type
     """stores data in a one-dimensional array"""
 
-    def __init__(self, data: list[str | bool | int | float | None]):
-        pass
+    def __init__(self, data: list[LT]) -> None:
+        self.data: list[LT] = data
 
-    def _check_data_type(
-        self, data: list[object | None], expected_type: Type[object]
-    ) -> None:
+    def _check_data_type(self, data: list[LT], expected_type: Type[object]) -> None:
         if not all(isinstance(x, expected_type) or x is None for x in data):
             raise ValueError(f"data must be a list of {expected_type.__name__} or None")
 
     def __getitem__(
         self, index: int | list[bool]
-    ) -> str | bool | int | float | None | list[str | bool | int | float | None]:
+    ) -> LT | Self:  # should be LT | Series
         if isinstance(index, int):
             if index < 0 or index >= len(self.data):
                 raise IndexError("index out of range")
@@ -84,7 +82,15 @@ def _find_data_type(data: list[object | None]) -> Type[object] | None:
     return None
 
 
-def SeriesFactory(data: list[str | bool | int | float | None]) -> Series:
+# StringList = TypeVar("StringList", bound=Sequence[str | None])
+# TypeVar("BoolList", bound=Sequence[bool | None])
+# TypeVar("IntList", bound=Sequence[int | None])
+# TypeVar("FloatList", bound=Sequence[float | None])
+
+
+def SeriesFactory(
+    data,
+) -> Series:
     # Determine the data type and create the appropriate Series subclass
     # THIS IS VERY HACKY
 
