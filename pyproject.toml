@@ -5,13 +5,13 @@ description = "pandastwo is a light weight pandas alternative that fails hard an
 authors = [{ name = "Lars Heimann", email = "lars@larsheimann.com" }]
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-    "pytest>=8.3.4",
-]
+dependencies = []
 
 [dependency-groups]
 dev = [
     "mypy>=1.13.0",
+    "pytest>=8.3.4",
+    "ruff>=0.8.1",
 ]
 
 [tool.pytest.ini_options]
