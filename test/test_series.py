@@ -489,3 +489,11 @@ def test_inequalities():
     assert l[0] == False
     assert l[1] == None
     assert l[2] == True
+
+
+def test_repr_function():
+    a = Series([1, 2, 3])
+    assert a.__repr__() == "Series([1, 2, 3])"
+
+    b = Series([True, False, True])
+    assert b.__repr__() == "Series([True, False, True])"

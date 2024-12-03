@@ -148,3 +148,6 @@ class Series[LT]:  # LT is a Generic Type for list type
 
     def __ne__(self, other: Self) -> Self:
         return self._eq_helper_function(other, lambda x, y: x != y)
+
+    def __repr__(self) -> str:
+        return f"Series({self.data})"
