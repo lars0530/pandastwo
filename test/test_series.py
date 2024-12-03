@@ -348,3 +348,97 @@ def test_sub_operation():
     assert l[0] == None
     assert l[1] == None
     assert l[2] == 27.0
+
+
+def test_mul_operation():
+    a = Series([1, 2, 3])
+    b = Series([1, 2, 3])
+    x = a * b
+    assert isinstance(x, Series)
+    assert x.data_type == int
+    assert x[0] == 1
+    assert x[1] == 4
+    assert x[2] == 9
+
+    c = Series([1.5, 2.5, 3.5])
+    d = Series([1.5, -2.5, 3.5])
+    y = c * d
+    assert isinstance(y, Series)
+    assert y.data_type == float
+    assert y[0] == 2.25
+    assert y[1] == -6.25
+    assert y[2] == 12.25
+
+    e = Series([1, 2, 3])
+    f = Series([-1.5, 2.5, 3.5])
+    z = e * f
+    assert isinstance(z, Series)
+    assert z.data_type == float
+    assert z[0] == -1.5
+    assert z[1] == 5.0
+    assert z[2] == 10.5
+
+    g = Series([10, 20, 30])
+    h = Series([1, None, -3])
+    w = g * h
+    assert isinstance(w, Series)
+    assert w.data_type == int
+    assert w[0] == 10
+    assert w[1] == None
+    assert w[2] == -90
+
+    i = Series([None, 20.5, 30.5])
+    j = Series([10.0, None, 3.5])
+    l = i * j
+    assert isinstance(l, Series)
+    assert l.data_type == float
+    assert l[0] == None
+    assert l[1] == None
+    assert l[2] == 106.75
+
+
+def test_div_operation():
+    a = Series([1, 2, 3])
+    b = Series([1, 2, 3])
+    x = a / b
+    assert isinstance(x, Series)
+    assert x.data_type == float
+    assert x[0] == 1.0
+    assert x[1] == 1.0
+    assert x[2] == 1.0
+
+    c = Series([1.5, 2.5, 3.5])
+    d = Series([1.5, -2.5, 3.5])
+    y = c / d
+    assert isinstance(y, Series)
+    assert y.data_type == float
+    assert y[0] == 1.0
+    assert y[1] == -1.0
+    assert y[2] == 1.0
+
+    e = Series([1, 2, 3])
+    f = Series([-1.5, 2.5, 3.5])
+    z = e / f
+    assert isinstance(z, Series)
+    assert z.data_type == float
+    assert z[0] == -0.6666666666666666
+    assert z[1] == 0.8
+    assert z[2] == 0.8571428571428571
+
+    g = Series([10, 20, 30])
+    h = Series([1, None, -3])
+    w = g / h
+    assert isinstance(w, Series)
+    assert w.data_type == float
+    assert w[0] == 10.0
+    assert w[1] == None
+    assert w[2] == -10.0
+
+    i = Series([None, 20.5, 30.5])
+    j = Series([10.0, None, 3.5])
+    l = i / j
+    assert isinstance(l, Series)
+    assert l.data_type == float
+    assert l[0] == None
+    assert l[1] == None
+    assert l[2] == 8.714285714285714
