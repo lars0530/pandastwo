@@ -1,8 +1,7 @@
-from abc import ABC
 from typing import Self, Type
 
 
-class Series[LT](ABC):  # LT is a Generic Type for list type
+class Series[LT]:  # LT is a Generic Type for list type
     """stores data in a one-dimensional array"""
 
     def __init__(self, data: list[LT]) -> None:
