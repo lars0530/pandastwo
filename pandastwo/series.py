@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Self, Type
+from typing import Self, Type, overload
 
 
 class Series[LT]:  # LT is a Generic Type for list type
@@ -28,10 +28,17 @@ class Series[LT]:  # LT is a Generic Type for list type
         if not all(isinstance(x, expected_type) or x is None for x in data):
             raise ValueError(f"data must be a list of {expected_type.__name__} or None")
 
+    @overload
+    def __getitem__(self, index: int) -> LT: ...
+    @overload
+    def __getitem__(self, index: list[bool]) -> Self: ...
+
     def __getitem__(
         self, index: int | list[bool]
     ) -> LT | Self:  # should be LT | Series
-        if not isinstance(index, int) and not isinstance(index, list):
+        if not isinstance(index, int) and not isinstance(
+            index, list
+        ):  # ideally isinstance(index, list[bool])
             raise ValueError("index must be an integer or a list of booleans")
 
         if isinstance(index, int):
@@ -40,7 +47,9 @@ class Series[LT]:  # LT is a Generic Type for list type
             return self.data[index]
 
         if isinstance(index, list):
-            # test index length == data_length
+            for i in index:
+                if not isinstance(i, bool):
+                    raise ValueError("list must contain only booleans")
             if len(index) != len(self.data):
                 raise ValueError("index must have the same length as the data")
             return Series([self.data[i] for i in range(len(index)) if index[i]])
@@ -81,7 +90,7 @@ class Series[LT]:  # LT is a Generic Type for list type
             raise ValueError("Series must have numeric data types to be operated")
 
         # cast to float if any of the data types is float
-        if self.data_type == float or other.data_type == float or force_float:
+        if self.data_type is float or other.data_type is float or force_float:
             data: list[float | None] = []
             for x, y in zip(self.data, other.data):
                 if x is None or y is None:
