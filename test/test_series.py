@@ -203,3 +203,54 @@ def test_series_creation_mixed_types():
 
     with pytest.raises(Exception):
         Series([True, 2.0, 3])
+
+
+def test_equality_operation():
+    a = Series(["a", "b", "c"])
+    b = Series(["a", "b", "c"])
+    x = a == b
+    assert isinstance(x, Series)
+    assert x[0] == True
+    assert x[1] == True
+    assert x[2] == True
+
+    c = Series([True, False, True])
+    d = Series([True, None, True])
+    y = c == d
+    assert isinstance(y, Series)
+    assert y[0] == True
+    assert y[1] == False
+    assert y[2] == True
+
+    e = Series([3, 2, 3])
+    f = Series([1, 2, 3])
+    z = e == f
+    assert isinstance(z, Series)
+    assert z[0] == False
+    assert z[1] == True
+    assert z[2] == True
+
+    g = Series([None, 2.0, 3.0])
+    h = Series([None, 2.0, 3.0])
+    w = g == h
+    assert isinstance(w, Series)
+    assert w[0] == True
+    assert w[1] == True
+    assert w[2] == True
+
+
+def test_equality_operation_exceptions():
+    a = Series(["a", "b", "c"])
+    b = Series(["a"])
+    with pytest.raises(Exception):
+        a == b
+
+    c = Series([True, False, True])
+    d = Series(["a", "b", "c"])
+    with pytest.raises(Exception):
+        c == d
+
+    e = Series([3, 2, 3])
+    f = [1, 2, 3]
+    with pytest.raises(Exception):
+        e == f

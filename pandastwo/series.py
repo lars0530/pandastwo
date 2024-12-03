@@ -11,6 +11,7 @@ class Series[LT]:  # LT is a Generic Type for list type
             raise ValueError("data cannot be empty")
 
         data_type = self._find_data_type(data)
+        self.data_type: type[LT] = data_type
         self._check_data_type(data, data_type)
         self.data: list[LT] = data
 
@@ -29,18 +30,35 @@ class Series[LT]:  # LT is a Generic Type for list type
     def __getitem__(
         self, index: int | list[bool]
     ) -> LT | Self:  # should be LT | Series
+        if not isinstance(index, int) and not isinstance(index, list):
+            raise ValueError("index must be an integer or a list of booleans")
+
         if isinstance(index, int):
             if index < 0 or index >= len(self.data):
                 raise IndexError("index out of range")
             return self.data[index]
 
-        elif isinstance(index, list):
+        if isinstance(index, list):
             # test index length == data_length
             if len(index) != len(self.data):
                 raise ValueError("index must have the same length as the data")
             return Series([self.data[i] for i in range(len(index)) if index[i]])
-        else:
-            raise ValueError("index must be an integer or a list of booleans")
 
     def __len__(self) -> int:
         return len(self.data)
+
+    def __eq__(self, other: object) -> Self:
+        # should be other: Series -> Series[bool], but mypy doesn't like that
+        # fail hard for different lengths
+        if not isinstance(other, Series):
+            raise ValueError("Only Series can be compared using equality operations")
+        if len(self) != len(other):
+            raise ValueError("Series must have the same length")
+        # fail hard for different types
+        if self.data_type != other.data_type:
+            raise ValueError("Series must have the same data type")
+
+        # otherwise do element wise returning boolean Series
+        return Series(
+            [x == y for x, y in zip(self.data, other.data)]
+        )  # it wants me to return boolean object
