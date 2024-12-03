@@ -6,6 +6,13 @@ class Series[LT](ABC):  # LT is a Generic Type for list type
     """stores data in a one-dimensional array"""
 
     def __init__(self, data: list[LT]) -> None:
+        if not data:
+            raise ValueError("data cannot be empty")
+        if len(data) == 0:  # NOT SURE ABOUT THIS
+            raise ValueError("data cannot be empty")
+
+        data_type = _find_data_type(data)
+        self._check_data_type(data, data_type)
         self.data: list[LT] = data
 
     def _check_data_type(self, data: list[LT], expected_type: Type[object]) -> None:
@@ -24,7 +31,7 @@ class Series[LT](ABC):  # LT is a Generic Type for list type
             # test index length == data_length
             if len(index) != len(self.data):
                 raise ValueError("index must have the same length as the data")
-            return SeriesFactory([self.data[i] for i in range(len(index)) if index[i]])
+            return Series([self.data[i] for i in range(len(index)) if index[i]])
         else:
             raise ValueError("index must be an integer or a list of booleans")
 
@@ -32,47 +39,47 @@ class Series[LT](ABC):  # LT is a Generic Type for list type
         return len(self.data)
 
 
-class StringSeries(Series):
-    """stores data in a one-dimensional array of strings"""
+# class StringSeries(Series):
+#     """stores data in a one-dimensional array of strings"""
 
-    def __init__(
-        self, data: list[str | None]
-    ):  # decide whether to use list or Sequence
+#     def __init__(
+#         self, data: list[str | None]
+#     ):  # decide whether to use list or Sequence
 
-        # check types
-        self._check_data_type(data, str)
+#         # check types
+#         self._check_data_type(data, str)
 
-        self.data = data
-
-
-class BoolSeries(Series):
-    """stores data in a one-dimensional array of booleans"""
-
-    def __init__(self, data: list[bool | None]):
-        # check types
-        self._check_data_type(data, bool)
-
-        self.data = data
+#         self.data = data
 
 
-class IntSeries(Series):
-    """stores data in a one-dimensional array of integers"""
+# class BoolSeries(Series):
+#     """stores data in a one-dimensional array of booleans"""
 
-    def __init__(self, data: list[int | None]):
-        # check types
-        self._check_data_type(data, int)
+#     def __init__(self, data: list[bool | None]):
+#         # check types
+#         self._check_data_type(data, bool)
 
-        self.data = data
+#         self.data = data
 
 
-class FloatSeries(Series):
-    """stores data in a one-dimensional array of floats"""
+# class IntSeries(Series):
+#     """stores data in a one-dimensional array of integers"""
 
-    def __init__(self, data: list[float | None]):
-        # check types
-        self._check_data_type(data, float)
+#     def __init__(self, data: list[int | None]):
+#         # check types
+#         self._check_data_type(data, int)
 
-        self.data = data
+#         self.data = data
+
+
+# class FloatSeries(Series):
+#     """stores data in a one-dimensional array of floats"""
+
+#     def __init__(self, data: list[float | None]):
+#         # check types
+#         self._check_data_type(data, float)
+
+#         self.data = data
 
 
 def _find_data_type(data: list[object | None]) -> Type[object] | None:
@@ -88,22 +95,22 @@ def _find_data_type(data: list[object | None]) -> Type[object] | None:
 # TypeVar("FloatList", bound=Sequence[float | None])
 
 
-def SeriesFactory(
-    data,
-) -> Series:
-    # Determine the data type and create the appropriate Series subclass
-    # THIS IS VERY HACKY
+# def SeriesFactory(
+#     data,
+# ) -> Series:
+#     # Determine the data type and create the appropriate Series subclass
+#     # THIS IS VERY HACKY
 
-    data_type = _find_data_type(data)
+#     data_type = _find_data_type(data)
 
-    # make a guess as to which series is supposed to be created
-    if data_type == str:
-        return StringSeries(data)
-    elif data_type == bool:
-        return BoolSeries(data)
-    elif data_type == int:
-        return IntSeries(data)
-    elif data_type == float:
-        return FloatSeries(data)
-    else:
-        raise ValueError(f"Unsupported data type {data_type}")
+#     # make a guess as to which series is supposed to be created
+#     if data_type == str:
+#         return StringSeries(data)
+#     elif data_type == bool:
+#         return BoolSeries(data)
+#     elif data_type == int:
+#         return IntSeries(data)
+#     elif data_type == float:
+#         return FloatSeries(data)
+#     else:
+#         raise ValueError(f"Unsupported data type {data_type}")
