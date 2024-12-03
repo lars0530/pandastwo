@@ -2,9 +2,14 @@ from pandastwo.series import Series
 import pytest
 
 
-def sanity_check():
+def test_sanity_check():
     # this is a sanity check to make sure the test is working
     assert 1 == 1
+
+
+def test_sanity_check2():
+    x = 1
+    assert x == 1
 
 
 def test_series_creation():
