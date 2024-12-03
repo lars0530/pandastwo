@@ -10,11 +10,19 @@ class Series[LT]:  # LT is a Generic Type for list type
         if len(data) == 0:  # NOT SURE ABOUT THIS
             raise ValueError("data cannot be empty")
 
-        data_type = _find_data_type(data)
+        data_type = self._find_data_type(data)
         self._check_data_type(data, data_type)
         self.data: list[LT] = data
 
-    def _check_data_type(self, data: list[LT], expected_type: Type[object]) -> None:
+    def _find_data_type(self, data: list[LT]) -> Type[LT]:
+        for x in data:
+            if x is not None:
+                return type(x)
+        raise ValueError(
+            "data cannot be consist of only None types"
+        )  # is this a proper assumption?
+
+    def _check_data_type(self, data: list[LT], expected_type: Type[LT]) -> None:
         if not all(isinstance(x, expected_type) or x is None for x in data):
             raise ValueError(f"data must be a list of {expected_type.__name__} or None")
 
@@ -79,13 +87,6 @@ class Series[LT]:  # LT is a Generic Type for list type
 #         self._check_data_type(data, float)
 
 #         self.data = data
-
-
-def _find_data_type(data: list[object | None]) -> Type[object] | None:
-    for x in data:
-        if x is not None:
-            return type(x)
-    return None
 
 
 # StringList = TypeVar("StringList", bound=Sequence[str | None])
