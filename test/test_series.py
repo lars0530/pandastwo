@@ -442,3 +442,50 @@ def test_div_operation():
     assert l[0] == None
     assert l[1] == None
     assert l[2] == 8.714285714285714
+
+
+def test_inequalities():
+    a = Series([2, 2, 3])
+    b = Series([1, 2, 3])
+    x = a > b
+    assert isinstance(x, Series)
+    assert x.data_type == bool
+    assert x[0] == True
+    assert x[1] == False
+    assert x[2] == False
+
+    c = Series([1.5, 2.5, 3.3])
+    d = Series([1.5, -2.5, 3.5])
+    y = c < d
+    assert isinstance(y, Series)
+    assert y.data_type == bool
+    assert y[0] == False
+    assert y[1] == False
+    assert y[2] == True
+
+    e = Series([1, 2, 3])
+    f = Series([-1.5, 2.0, 3.5])
+    z = e >= f
+    assert isinstance(z, Series)
+    assert z.data_type == bool
+    assert z[0] == True
+    assert z[1] == True
+    assert z[2] == False
+
+    g = Series([10, 20, -30])
+    h = Series([1, None, -3])
+    w = g <= h
+    assert isinstance(w, Series)
+    assert w.data_type == bool
+    assert w[0] == False
+    assert w[1] == None
+    assert w[2] == True
+
+    i = Series([10.0, 20.5, 30.5])
+    j = Series([10.0, None, 3.5])
+    l = i != j
+    assert isinstance(l, Series)
+    assert l.data_type == bool
+    assert l[0] == False
+    assert l[1] == None
+    assert l[2] == True

@@ -188,3 +188,113 @@ class Series[LT]:  # LT is a Generic Type for list type
             else:
                 data.append(float(x) / float(y))
         return Series(data)
+
+    def __lt__(self, other: Self) -> Self:
+        if isinstance(other, int) or isinstance(other, float):
+            # if other is a scalar, make it a Series and continue add operation
+            other = Series([other for _ in self.data])
+        if not isinstance(other, Series):
+            raise ValueError("Only Series can be compared using equality operations")
+        if len(self) != len(other):
+            raise ValueError("Series must have the same length")
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+        # check if both data types are numeric
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+
+        data = []
+        for x, y in zip(self.data, other.data):
+            if x is None or y is None:
+                data.append(None)
+            else:
+                data.append(x < y)
+        return Series(data)
+
+    def __le__(self, other: Self) -> Self:
+        if isinstance(other, int) or isinstance(other, float):
+            # if other is a scalar, make it a Series and continue add operation
+            other = Series([other for _ in self.data])
+        if not isinstance(other, Series):
+            raise ValueError("Only Series can be compared using equality operations")
+        if len(self) != len(other):
+            raise ValueError("Series must have the same length")
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+        # check if both data types are numeric
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+
+        data = []
+        for x, y in zip(self.data, other.data):
+            if x is None or y is None:
+                data.append(None)
+            else:
+                data.append(x <= y)
+        return Series(data)
+
+    def __gt__(self, other: Self) -> Self:
+        if isinstance(other, int) or isinstance(other, float):
+            # if other is a scalar, make it a Series and continue add operation
+            other = Series([other for _ in self.data])
+        if not isinstance(other, Series):
+            raise ValueError("Only Series can be compared using equality operations")
+        if len(self) != len(other):
+            raise ValueError("Series must have the same length")
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+        # check if both data types are numeric
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+
+        data = []
+        for x, y in zip(self.data, other.data):
+            if x is None or y is None:
+                data.append(None)
+            else:
+                data.append(x > y)
+        return Series(data)
+
+    def __ge__(self, other: Self) -> Self:
+        if isinstance(other, int) or isinstance(other, float):
+            # if other is a scalar, make it a Series and continue add operation
+            other = Series([other for _ in self.data])
+        if not isinstance(other, Series):
+            raise ValueError("Only Series can be compared using equality operations")
+        if len(self) != len(other):
+            raise ValueError("Series must have the same length")
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+        # check if both data types are numeric
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+
+        data = []
+        for x, y in zip(self.data, other.data):
+            if x is None or y is None:
+                data.append(None)
+            else:
+                data.append(x >= y)
+        return Series(data)
+
+    def __ne__(self, other: Self) -> Self:
+        if isinstance(other, int) or isinstance(other, float):
+            # if other is a scalar, make it a Series and continue add operation
+            other = Series([other for _ in self.data])
+        if not isinstance(other, Series):
+            raise ValueError("Only Series can be compared using equality operations")
+        if len(self) != len(other):
+            raise ValueError("Series must have the same length")
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+        # check if both data types are numeric
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+
+        data = []
+        for x, y in zip(self.data, other.data):
+            if x is None or y is None:
+                data.append(None)
+            else:
+                data.append(x != y)
+        return Series(data)
