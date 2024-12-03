@@ -96,3 +96,37 @@ class Series[LT]:  # LT is a Generic Type for list type
                 else:
                     data.append(x + y)
             return Series(data)
+
+    def __sub__(self, other: Self) -> Self:
+        if isinstance(other, int) or isinstance(other, float):
+            # if other is a scalar, make it a Series and continue add operation
+            other = Series([other for _ in self.data])
+
+        if not isinstance(other, Series):
+            raise ValueError("Only Series can be added to another Series")
+
+        if len(self) != len(other):
+            raise ValueError("Series must have the same length")
+
+        # check if both data types are numeric
+        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+            raise ValueError("Series must have numeric data types to be added")
+
+        # cast to float if any of the data types is float
+        if self.data_type == float or other.data_type == float:
+            data = []
+            for x, y in zip(self.data, other.data):
+                if x is None or y is None:
+                    data.append(None)
+                else:
+                    data.append(float(x) - float(y))
+            return Series(data)
+
+        else:  # return int Series
+            data = []
+            for x, y in zip(self.data, other.data):
+                if x is None or y is None:
+                    data.append(None)
+                else:
+                    data.append(x - y)
+            return Series(data)

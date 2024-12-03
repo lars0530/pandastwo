@@ -276,11 +276,11 @@ def test_add_operation():
     assert y[2] == 6.0
 
     e = Series([1, 2, 3])
-    f = Series([1.0, 2.0, 3.0])
+    f = Series([-1.0, 2.0, 3.0])
     z = e + f
     assert isinstance(z, Series)
     assert z.data_type == float
-    assert z[0] == 2.0
+    assert z[0] == 0.0
     assert z[1] == 4.0
     assert z[2] == 6.0
 
@@ -301,3 +301,50 @@ def test_add_operation():
     assert l[0] == None
     assert l[1] == None
     assert l[2] == 6.0
+
+
+def test_sub_operation():
+    a = Series([-10, 20, 30])
+    b = Series([1, 2, 3])
+    x = a - b
+    assert isinstance(x, Series)
+    assert x.data_type == int
+    assert x[0] == -11
+    assert x[1] == 18
+    assert x[2] == 27
+
+    c = Series([10.5, 20.5, 30.5])
+    d = Series([1.5, -2.5, 3.5])
+    y = c - d
+    assert isinstance(y, Series)
+    assert y.data_type == float
+    assert y[0] == 9.0
+    assert y[1] == 23.0
+    assert y[2] == 27.0
+
+    e = Series([-10, 20, 30])
+    f = Series([-1.5, 2.5, 3.5])
+    z = e - f
+    assert isinstance(z, Series)
+    assert z.data_type == float
+    assert z[0] == -8.5
+    assert z[1] == 17.5
+    assert z[2] == 26.5
+
+    g = Series([10, 20, 30])
+    h = Series([1, None, -3])
+    w = g - h
+    assert isinstance(w, Series)
+    assert w.data_type == int
+    assert w[0] == 9
+    assert w[1] == None
+    assert w[2] == 33
+
+    i = Series([None, 20.5, 30.5])
+    j = Series([10.0, None, 3.5])
+    l = i - j
+    assert isinstance(l, Series)
+    assert l.data_type == float
+    assert l[0] == None
+    assert l[1] == None
+    assert l[2] == 27.0
