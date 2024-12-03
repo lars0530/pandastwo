@@ -254,3 +254,50 @@ def test_equality_operation_exceptions():
     f = [1, 2, 3]
     with pytest.raises(Exception):
         e == f
+
+
+def test_add_operation():
+    a = Series([1, 2, 3])
+    b = Series([1, 2, 3])
+    x = a + b
+    assert isinstance(x, Series)
+    assert x.data_type == int
+    assert x[0] == 2
+    assert x[1] == 4
+    assert x[2] == 6
+
+    c = Series([1.0, 2.0, 3.0])
+    d = Series([1.0, 2.0, 3.0])
+    y = c + d
+    assert isinstance(y, Series)
+    assert y.data_type == float
+    assert y[0] == 2.0
+    assert y[1] == 4.0
+    assert y[2] == 6.0
+
+    e = Series([1, 2, 3])
+    f = Series([1.0, 2.0, 3.0])
+    z = e + f
+    assert isinstance(z, Series)
+    assert z.data_type == float
+    assert z[0] == 2.0
+    assert z[1] == 4.0
+    assert z[2] == 6.0
+
+    g = Series([1, 2, 3])
+    h = Series([1, None, 3])
+    w = g + h
+    assert isinstance(w, Series)
+    assert w.data_type == int
+    assert w[0] == 2
+    assert w[1] == None
+    assert w[2] == 6
+
+    i = Series([None, 2.0, 3.0])
+    j = Series([1, None, 3])
+    l = i + j
+    assert isinstance(l, Series)
+    assert l.data_type == float
+    assert l[0] == None
+    assert l[1] == None
+    assert l[2] == 6.0
