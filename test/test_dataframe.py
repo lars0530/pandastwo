@@ -61,7 +61,7 @@ def test_dataframe_access_bool_list():
         "column2": Series([None, 5, 6]),
     }
     df = DataFrame(data)
-    new_df = df[[True, False, True]]
+    new_df = df[Series([True, False, True])]
     assert new_df["column1"] == Series([1, 3])
     assert new_df["column2"] == Series([None, 6])
 

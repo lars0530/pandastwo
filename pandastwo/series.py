@@ -34,11 +34,11 @@ class Series[LT]:  # LT is a Generic Type for list type
     def __getitem__(self, index: list[bool]) -> Self: ...
 
     def __getitem__(
-        self, index: int | list[bool]
-    ) -> LT | Self:  # should be LT | Series
+        self, index: int | Self
+    ) -> LT | Self:  # should be int |Series[self] -> LT | Series[LT]
         if not isinstance(index, int) and not isinstance(
-            index, list
-        ):  # ideally isinstance(index, list[bool])
+            index, Series
+        ):  # ideally check if isinstance(index, Series[bool])
             raise ValueError("index must be an integer or a list of booleans")
 
         if isinstance(index, int):
@@ -46,8 +46,8 @@ class Series[LT]:  # LT is a Generic Type for list type
                 raise IndexError("index out of range")
             return self.data[index]
 
-        if isinstance(index, list):
-            for i in index:
+        if isinstance(index, Series):
+            for i in index.data:
                 if not isinstance(i, bool):
                     raise ValueError("list must contain only booleans")
             if len(index) != len(self.data):

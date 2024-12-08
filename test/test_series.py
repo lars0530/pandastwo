@@ -85,28 +85,28 @@ def test_square_brackets_index():
 def test_square_brackets_bool_list():
     """checks whether square brackets operator returns elements at True indices as new Series"""
     a = Series(["a", "b", "c", None])
-    a_bool_list = a[[True, False, True, False]]
+    a_bool_list = a[Series([True, False, True, False])]
     assert isinstance(a_bool_list, Series)
     assert a_bool_list[0] == "a"
     assert a_bool_list[1] == "c"
     assert len(a_bool_list) == 2
     b = Series([True, False, None, True])
 
-    b_bool_list = b[[False, True, False, True]]
+    b_bool_list = b[Series([False, True, False, True])]
     assert isinstance(b_bool_list, Series)
     assert b_bool_list[0] == False
     assert b_bool_list[1] == True
     assert len(b_bool_list) == 2
 
     c = Series([1, 2, 3, None])
-    c_bool_list = c[[True, False, True, False]]
+    c_bool_list = c[Series([True, False, True, False])]
     assert isinstance(c_bool_list, Series)
     assert c_bool_list[0] == 1
     assert c_bool_list[1] == 3
     assert len(c_bool_list) == 2
 
     d = Series([1.0, 2.0, 3.0, None])
-    d_bool_list = d[[False, True, False, True]]
+    d_bool_list = d[Series([False, True, False, True])]
     assert isinstance(d_bool_list, Series)
     assert d_bool_list[0] == 2.0
     assert d_bool_list[1] == None

@@ -25,18 +25,20 @@ class DataFrame:
         if len(set(lengths.values())) > 1:
             raise ValueError("all Series must have the same length")
 
-    def __getitem__(self, key: str | list[bool]) -> "DataFrame":
+    def __getitem__(self, key: str | Series) -> "DataFrame":
         if not isinstance(key, str) and not isinstance(
-            key, list
-        ):  # ideally isinstance(key, list[bool])
-            raise ValueError("key must be a string or a list of booleans")
+            key, Series
+        ):  # ideally check if not isinstance(key, Series[bool])
+            raise ValueError("key must be a string or a Series of booleans")
 
         if isinstance(key, str):
             if not key in self.data.keys():
                 raise KeyError(f"key {key} not found")
             return self.data[key]
 
-        if isinstance(key, list):  # ideally isinstance(key, list[bool])
+        if isinstance(
+            key, Series
+        ):  # ideally check if not isinstance(key, Series[bool])
             for k in key:
                 if not isinstance(k, bool):
                     raise ValueError("list must contain only booleans")
