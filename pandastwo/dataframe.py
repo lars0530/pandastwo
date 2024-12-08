@@ -41,12 +41,15 @@ class DataFrame:
 
         if isinstance(
             key, Series
-        ):  # ideally check if not isinstance(key, Series[bool])
-            for k in key:
-                if not isinstance(k, bool):
-                    raise ValueError("list must contain only booleans")
+        ):  # ideally check if not isinstance(key, Series[bool]), but this is not possible
             if len(key) != len(next(iter(self.data.values()))):
                 raise ValueError("key must have the same length as the data")
+            for k in key:
+                if k is not None and not isinstance(
+                    k, bool
+                ):  # if k is neither None nor bool
+                    raise ValueError("list must contain only booleans or None type")
+
             return DataFrame({k: self.data[k][key] for k in self.data.keys()})
 
     def __repr__(self):

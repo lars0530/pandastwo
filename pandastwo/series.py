@@ -49,12 +49,14 @@ class Series[LT]:  # LT is a Generic Type for list type
             return self.data[index]
 
         if isinstance(index, Series):
-            for i in index.data:
-                if not isinstance(i, bool):
-                    raise ValueError("list must contain only booleans")
             if len(index) != len(self.data):
                 raise ValueError("index must have the same length as the data")
-            return Series([self.data[i] for i in range(len(index)) if index[i]])
+            for i in index.data:
+                if i is not None and not isinstance(
+                    i, bool
+                ):  # if i is neither None nor bool
+                    raise ValueError("Series must contain only booleans or None")
+            return Series([self.data[i] for i in range(len(index)) if index[i] is True])
 
     def __len__(self) -> int:
         return len(self.data)
@@ -188,4 +190,5 @@ class Series[LT]:  # LT is a Generic Type for list type
     def __invert__(self) -> Self:
         if self.data_type is not bool:
             raise ValueError("Series must have the data type bool to be inverted")
-        return Series([not x for x in self.data])
+        y = Series([not x if x is not None else None for x in self.data])
+        return y

@@ -113,6 +113,22 @@ def test_square_brackets_bool_list():
     assert len(d_bool_list) == 2
 
 
+def test_square_brackets_bool_list_with_none():
+    """checks whether square brackets operator returns elements at True indices as new Series (including None values in bool Series)"""
+    a = Series(["a", "b", "c", None])
+    a_bool_list = a[Series([True, None, True, False])]
+    assert isinstance(a_bool_list, Series)
+    assert a_bool_list[0] == "a"
+    assert a_bool_list[1] == "c"
+    assert len(a_bool_list) == 2
+
+    b = Series([True, False, None, True])
+    b_bool_list = b[Series([None, None, False, True])]
+    assert isinstance(b_bool_list, Series)
+    assert b_bool_list[0] is True
+    assert len(b_bool_list) == 1
+
+
 def test_square_brackets_index_out_of_bounds():
     """checks whether square brackets operator raises an exception when index is out of bounds"""
     a = Series(["a", "b", "c", None])
@@ -497,3 +513,26 @@ def test_repr_function():
 
     b = Series([True, False, True])
     assert b.__repr__() == "Series([True, False, True])"
+
+
+def test_eq_with_none():
+    # this is by design. None is not evaluated.
+    a = Series([True, False, None])
+    b = Series([True, False, False])
+    assert a == b
+
+
+def test_invert_with_none():
+    a = Series([True, False, None])
+    b = ~a
+    assert b.data == [False, True, None]
+
+
+def test_invert_expected():
+    a = Series([True, False, None])
+    b = Series([1, 2, 3])
+    c = b[a]
+    assert c == Series([1])
+
+
+test_square_brackets_bool_list_with_none()
