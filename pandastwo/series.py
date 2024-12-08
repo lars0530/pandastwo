@@ -160,3 +160,30 @@ class Series[LT]:  # LT is a Generic Type for list type
 
     def __repr__(self) -> str:
         return f"Series({self.data})"
+
+    def _element_wise_bool_helper_function(
+        self, other: Self, operation: Callable
+    ) -> Self:
+        if not isinstance(other, Series):
+            raise ValueError("Only Series can be compared using equality operations")
+        if len(self) != len(other):
+            raise ValueError("Series must have the same length")
+        if self.data_type != bool or other.data_type != bool:
+            raise ValueError(
+                "Series must have the same data type bool, currently: {self.data_type} and {other.data_type}"
+            )
+        return Series([operation(x, y) for x, y in zip(self.data, other.data)])
+
+    def __and__(self, other: Self) -> Self:
+        return self._element_wise_bool_helper_function(other, lambda x, y: x and y)
+
+    def __or__(self, other: Self) -> Self:
+        return self._element_wise_bool_helper_function(other, lambda x, y: x or y)
+
+    def __xor__(self, other: Self) -> Self:
+        return self._element_wise_bool_helper_function(other, lambda x, y: x ^ y)
+
+    def __invert__(self) -> Self:
+        if self.data_type != bool:
+            raise ValueError("Series must have the data type bool to be inverted")
+        return Series([not x for x in self.data])
