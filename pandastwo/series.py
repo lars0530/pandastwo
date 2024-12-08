@@ -8,8 +8,8 @@ class Series[LT]:  # LT is a Generic Type for list type
     def __init__(self, data: list[LT]) -> None:
         if not data:
             raise ValueError("data cannot be empty")
-        # an empty list is allowed as data because in the future we might want to start
-        # with an empty list and add data later.
+        if not isinstance(data, list):
+            raise ValueError("data must be of type list")
 
         data_type = self._find_data_type(data)
         self.data_type: type[LT] = data_type

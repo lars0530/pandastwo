@@ -7,10 +7,10 @@ from pandastwo.series import Series
 
 class DataFrame:
     def __init__(self, data: dict[str, Series]) -> None:
+        # currently data cannot be empty because there is no way to add data and an empty Series is not useful
+        # this should be changed in the future when adding data is implemented
         if not data:
             raise ValueError("data cannot be empty")
-        # an empty dict is allowed as data because in the future we might want to start
-        # with an empty dict and add data later.
         if not isinstance(data, dict):
             raise ValueError("data must be of type dictionary")
         # check all keys are string, all values are Series
