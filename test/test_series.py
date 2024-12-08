@@ -295,12 +295,12 @@ def test_add_operation():
 
     i = Series([None, 2.0, 3.0])
     j = Series([1, None, 3])
-    l = i + j
-    assert isinstance(l, Series)
-    assert l.data_type is float
-    assert l[0] is None
-    assert l[1] is None
-    assert l[2] == 6.0
+    k = i + j
+    assert isinstance(k, Series)
+    assert k.data_type is float
+    assert k[0] is None
+    assert k[1] is None
+    assert k[2] == 6.0
 
 
 def test_sub_operation():
@@ -342,12 +342,12 @@ def test_sub_operation():
 
     i = Series([None, 20.5, 30.5])
     j = Series([10.0, None, 3.5])
-    l = i - j
-    assert isinstance(l, Series)
-    assert l.data_type is float
-    assert l[0] is None
-    assert l[1] is None
-    assert l[2] == 27.0
+    k = i - j
+    assert isinstance(k, Series)
+    assert k.data_type is float
+    assert k[0] is None
+    assert k[1] is None
+    assert k[2] == 27.0
 
 
 def test_mul_operation():
@@ -389,12 +389,12 @@ def test_mul_operation():
 
     i = Series([None, 20.5, 30.5])
     j = Series([10.0, None, 3.5])
-    l = i * j
-    assert isinstance(l, Series)
-    assert l.data_type is float
-    assert l[0] is None
-    assert l[1] is None
-    assert l[2] == 106.75
+    k = i * j
+    assert isinstance(k, Series)
+    assert k.data_type is float
+    assert k[0] is None
+    assert k[1] is None
+    assert k[2] == 106.75
 
 
 def test_div_operation():
@@ -436,12 +436,12 @@ def test_div_operation():
 
     i = Series([None, 20.5, 30.5])
     j = Series([10.0, None, 3.5])
-    l = i / j
-    assert isinstance(l, Series)
-    assert l.data_type is float
-    assert l[0] is None
-    assert l[1] is None
-    assert l[2] == 8.714285714285714
+    k = i / j
+    assert isinstance(k, Series)
+    assert k.data_type is float
+    assert k[0] is None
+    assert k[1] is None
+    assert k[2] == 8.714285714285714
 
 
 def test_inequalities():
@@ -483,12 +483,12 @@ def test_inequalities():
 
     i = Series([10.0, 20.5, 30.5])
     j = Series([10.0, None, 3.5])
-    l = i != j
-    assert isinstance(l, Series)
-    assert l.data_type is bool
-    assert l[0] is False
-    assert l[1] is None
-    assert l[2] is True
+    k = i != j
+    assert isinstance(k, Series)
+    assert k.data_type is bool
+    assert k[0] is False
+    assert k[1] is None
+    assert k[2] is True
 
 
 def test_repr_function():
