@@ -1,6 +1,7 @@
 from pandastwo.dataframe import DataFrame
 from pandastwo.series import Series
 import pytest
+import random
 
 
 def test_sanity_check():
@@ -204,3 +205,60 @@ def test_not_taxed_none():
     print(df_not_taxed)
     df_not_taxed_filter = df[df_not_taxed]["SKU"]
     assert df_not_taxed_filter == Series(["A002"])
+
+
+def test_large_dataframe_creation():
+    data = {
+        f"column{i}": Series([random.randint(0, 100) for _ in range(10000)])
+        for i in range(100)
+    }
+    df = DataFrame(data)
+    assert isinstance(df, DataFrame)
+    assert len(df.data) == 100
+    assert all(len(series) == 10000 for series in df.data.values())
+
+
+def test_large_dataframe_access_string_key():
+    data = {
+        f"column{i}": Series([random.randint(0, 100) for _ in range(10000)])
+        for i in range(100)
+    }
+    df = DataFrame(data)
+    for i in range(100):
+        assert df[f"column{i}"] == data[f"column{i}"]
+
+
+def test_large_dataframe_access_bool_list():
+    data = {
+        f"column{i}": Series([random.randint(0, 100) for _ in range(10000)])
+        for i in range(100)
+    }
+    df = DataFrame(data)
+    bool_list = Series([random.choice([True, False]) for _ in range(10000)])
+    new_df = df[bool_list]
+    for i in range(100):
+        assert new_df[f"column{i}"] == Series(
+            [val for val, flag in zip(data[f"column{i}"], bool_list) if flag]
+        )
+
+
+def test_large_dataframe_access_bool_list_with_wrong_length():
+    data = {
+        f"column{i}": Series([random.randint(0, 100) for _ in range(10000)])
+        for i in range(100)
+    }
+    df = DataFrame(data)
+    bool_list = Series([random.choice([True, False]) for _ in range(9999)])
+    with pytest.raises(ValueError):
+        df[bool_list]
+
+
+def test_large_dataframe_access_non_bool_list():
+    data = {
+        f"column{i}": Series([random.randint(0, 100) for _ in range(10000)])
+        for i in range(100)
+    }
+    df = DataFrame(data)
+    non_bool_list = Series([random.randint(0, 100) for _ in range(10000)])
+    with pytest.raises(ValueError):
+        df[non_bool_list]
