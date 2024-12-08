@@ -59,5 +59,8 @@ uv venv
 uv sync --dev
 
 # run tests
-uv run pytest
+uv run pytest test
+
+# run mypy (typing not perfect)
+uv run mypy pandastwo
 ```
