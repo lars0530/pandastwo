@@ -61,25 +61,25 @@ def test_square_brackets_index():
     assert a[0] == "a"
     assert a[1] == "b"
     assert a[2] == "c"
-    assert a[3] == None
+    assert a[3] is None
 
     b = Series([True, False, None, True])
-    assert b[0] == True
-    assert b[1] == False
-    assert b[2] == None
-    assert b[3] == True
+    assert b[0] is True
+    assert b[1] is False
+    assert b[2] is None
+    assert b[3] is True
 
     c = Series([1, 2, 3, None])
     assert c[0] == 1
     assert c[1] == 2
     assert c[2] == 3
-    assert c[3] == None
+    assert c[3] is None
 
     d = Series([1.0, 2.0, 3.0, None])
     assert d[0] == 1.0
     assert d[1] == 2.0
     assert d[2] == 3.0
-    assert d[3] == None
+    assert d[3] is None
 
 
 def test_square_brackets_bool_list():
@@ -94,8 +94,8 @@ def test_square_brackets_bool_list():
 
     b_bool_list = b[Series([False, True, False, True])]
     assert isinstance(b_bool_list, Series)
-    assert b_bool_list[0] == False
-    assert b_bool_list[1] == True
+    assert b_bool_list[0] is False
+    assert b_bool_list[1] is True
     assert len(b_bool_list) == 2
 
     c = Series([1, 2, 3, None])
@@ -109,7 +109,7 @@ def test_square_brackets_bool_list():
     d_bool_list = d[Series([False, True, False, True])]
     assert isinstance(d_bool_list, Series)
     assert d_bool_list[0] == 2.0
-    assert d_bool_list[1] == None
+    assert d_bool_list[1] is None
     assert len(d_bool_list) == 2
 
 
@@ -210,33 +210,33 @@ def test_equality_operation():
     b = Series(["a", "b", "c"])
     x = a == b
     assert isinstance(x, Series)
-    assert x[0] == True
-    assert x[1] == True
-    assert x[2] == True
+    assert x[0] is True
+    assert x[1] is True
+    assert x[2] is True
 
     c = Series([True, False, True])
     d = Series([True, None, True])
     y = c == d
     assert isinstance(y, Series)
-    assert y[0] == True
-    assert y[1] == False
-    assert y[2] == True
+    assert y[0] is True
+    assert y[1] is False
+    assert y[2] is True
 
     e = Series([3, 2, 3])
     f = Series([1, 2, 3])
     z = e == f
     assert isinstance(z, Series)
-    assert z[0] == False
-    assert z[1] == True
-    assert z[2] == True
+    assert z[0] is False
+    assert z[1] is True
+    assert z[2] is True
 
     g = Series([None, 2.0, 3.0])
     h = Series([None, 2.0, 3.0])
     w = g == h
     assert isinstance(w, Series)
-    assert w[0] == True
-    assert w[1] == True
-    assert w[2] == True
+    assert w[0] is True
+    assert w[1] is True
+    assert w[2] is True
 
 
 def test_equality_operation_exceptions():
@@ -290,7 +290,7 @@ def test_add_operation():
     assert isinstance(w, Series)
     assert w.data_type == int
     assert w[0] == 2
-    assert w[1] == None
+    assert w[1] is None
     assert w[2] == 6
 
     i = Series([None, 2.0, 3.0])
@@ -298,8 +298,8 @@ def test_add_operation():
     l = i + j
     assert isinstance(l, Series)
     assert l.data_type == float
-    assert l[0] == None
-    assert l[1] == None
+    assert l[0] is None
+    assert l[1] is None
     assert l[2] == 6.0
 
 
@@ -337,7 +337,7 @@ def test_sub_operation():
     assert isinstance(w, Series)
     assert w.data_type == int
     assert w[0] == 9
-    assert w[1] == None
+    assert w[1] is None
     assert w[2] == 33
 
     i = Series([None, 20.5, 30.5])
@@ -345,8 +345,8 @@ def test_sub_operation():
     l = i - j
     assert isinstance(l, Series)
     assert l.data_type == float
-    assert l[0] == None
-    assert l[1] == None
+    assert l[0] is None
+    assert l[1] is None
     assert l[2] == 27.0
 
 
@@ -384,7 +384,7 @@ def test_mul_operation():
     assert isinstance(w, Series)
     assert w.data_type == int
     assert w[0] == 10
-    assert w[1] == None
+    assert w[1] is None
     assert w[2] == -90
 
     i = Series([None, 20.5, 30.5])
@@ -392,8 +392,8 @@ def test_mul_operation():
     l = i * j
     assert isinstance(l, Series)
     assert l.data_type == float
-    assert l[0] == None
-    assert l[1] == None
+    assert l[0] is None
+    assert l[1] is None
     assert l[2] == 106.75
 
 
@@ -431,7 +431,7 @@ def test_div_operation():
     assert isinstance(w, Series)
     assert w.data_type == float
     assert w[0] == 10.0
-    assert w[1] == None
+    assert w[1] is None
     assert w[2] == -10.0
 
     i = Series([None, 20.5, 30.5])
@@ -439,8 +439,8 @@ def test_div_operation():
     l = i / j
     assert isinstance(l, Series)
     assert l.data_type == float
-    assert l[0] == None
-    assert l[1] == None
+    assert l[0] is None
+    assert l[1] is None
     assert l[2] == 8.714285714285714
 
 
@@ -450,45 +450,45 @@ def test_inequalities():
     x = a > b
     assert isinstance(x, Series)
     assert x.data_type == bool
-    assert x[0] == True
-    assert x[1] == False
-    assert x[2] == False
+    assert x[0] is True
+    assert x[1] is False
+    assert x[2] is False
 
     c = Series([1.5, 2.5, 3.3])
     d = Series([1.5, -2.5, 3.5])
     y = c < d
     assert isinstance(y, Series)
     assert y.data_type == bool
-    assert y[0] == False
-    assert y[1] == False
-    assert y[2] == True
+    assert y[0] is False
+    assert y[1] is False
+    assert y[2] is True
 
     e = Series([1, 2, 3])
     f = Series([-1.5, 2.0, 3.5])
     z = e >= f
     assert isinstance(z, Series)
     assert z.data_type == bool
-    assert z[0] == True
-    assert z[1] == True
-    assert z[2] == False
+    assert z[0] is True
+    assert z[1] is True
+    assert z[2] is False
 
     g = Series([10, 20, -30])
     h = Series([1, None, -3])
     w = g <= h
     assert isinstance(w, Series)
     assert w.data_type == bool
-    assert w[0] == False
-    assert w[1] == None
-    assert w[2] == True
+    assert w[0] is False
+    assert w[1] is None
+    assert w[2] is True
 
     i = Series([10.0, 20.5, 30.5])
     j = Series([10.0, None, 3.5])
     l = i != j
     assert isinstance(l, Series)
     assert l.data_type == bool
-    assert l[0] == False
-    assert l[1] == None
-    assert l[2] == True
+    assert l[0] is False
+    assert l[1] is None
+    assert l[2] is True
 
 
 def test_repr_function():

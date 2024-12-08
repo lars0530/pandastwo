@@ -2,7 +2,6 @@
 import sys
 
 sys.path.append("../")  # ONLY for IPython kernel
-from typing import Self
 from pandastwo.series import Series
 
 
@@ -32,7 +31,7 @@ class DataFrame:
             raise ValueError("key must be a string or a Series of booleans")
 
         if isinstance(key, str):
-            if not key in self.data.keys():
+            if key not in self.data.keys():
                 raise KeyError(f"key {key} not found")
             return self.data[key]
 
