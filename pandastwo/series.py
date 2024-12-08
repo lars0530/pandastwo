@@ -1,3 +1,7 @@
+# %%
+import sys
+
+sys.path.append("../")  # ONLY for IPython kernel
 from collections.abc import Callable
 from typing import Self, Type, overload
 
@@ -6,6 +10,8 @@ class Series[LT]:  # LT is a Generic Type for list type
     """stores data in a one-dimensional array"""
 
     def __init__(self, data: list[LT]) -> None:
+        # currently data cannot be empty because there is no way to add data and an empty DataFrame is not useful
+        # this should be changed in the future when adding data is implemented
         if not data:
             raise ValueError("data cannot be empty")
         if not isinstance(data, list):
