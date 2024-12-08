@@ -168,7 +168,7 @@ class Series[LT]:  # LT is a Generic Type for list type
             raise ValueError("Only Series can be compared using equality operations")
         if len(self) != len(other):
             raise ValueError("Series must have the same length")
-        if self.data_type != bool or other.data_type != bool:
+        if self.data_type is not bool or other.data_type is not bool:
             raise ValueError(
                 "Series must have the same data type bool, currently: {self.data_type} and {other.data_type}"
             )
@@ -184,6 +184,6 @@ class Series[LT]:  # LT is a Generic Type for list type
         return self._element_wise_bool_helper_function(other, lambda x, y: x ^ y)
 
     def __invert__(self) -> Self:
-        if self.data_type != bool:
+        if self.data_type is not bool:
             raise ValueError("Series must have the data type bool to be inverted")
         return Series([not x for x in self.data])
