@@ -111,7 +111,7 @@ def test_official():
     assert result == expected_result
 
 
-def test_price_none():
+def test_price():
     df = DataFrame(TEST_DATA)
 
     df_price_one = df["price"] + 5.0
@@ -123,7 +123,7 @@ def test_price_none():
     assert df[df_price_filter]["SKU"] == Series(["X4E", "F8D", "C7X"])
 
 
-def test_sales_none():
+def test_sales():
     df = DataFrame(TEST_DATA)
 
     df_sales_filter = df["sales"] > 3
@@ -131,7 +131,7 @@ def test_sales_none():
     assert df[df_sales_filter]["SKU"] == Series(["X4E", "C7X"])
 
 
-def test_price_and_sales_none():
+def test_price_and_sales():
     df = DataFrame(TEST_DATA)
 
     df_price_one = df["price"] + 5.0
@@ -142,7 +142,7 @@ def test_price_and_sales_none():
     assert df_price_and_sales == Series([True, False, False, True])
 
 
-def test_not_taxed_none():
+def test_not_taxed():
     df = DataFrame(TEST_DATA)
 
     df_not_taxed = ~df["taxed"]

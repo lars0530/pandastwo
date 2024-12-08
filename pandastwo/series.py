@@ -46,11 +46,11 @@ class Series[LT]:  # LT is a Generic Type for list type
     @overload
     def __getitem__(self, index: int) -> LT: ...
     @overload
-    def __getitem__(self, index: list[bool]) -> Self: ...
+    def __getitem__(self, index: Self) -> Self: ...
 
     def __getitem__(
         self, index: int | Self
-    ) -> LT | Self:  # should be int |Series[self] -> LT | Series[LT]
+    ) -> LT | "Series":  # should be int |Series[self] -> LT | Series[LT]
         if not isinstance(index, int) and not isinstance(
             index, Series
         ):  # ideally check if isinstance(index, Series[bool])
@@ -108,22 +108,22 @@ class Series[LT]:  # LT is a Generic Type for list type
 
         # cast to float if any of the data types is float
         if self.data_type is float or other.data_type is float or force_float:
-            data: list[float | None] = []
+            data_float: list[float | None] = []
             for x, y in zip(self.data, other.data):
                 if x is None or y is None:
-                    data.append(None)
+                    data_float.append(None)
                 else:
-                    data.append(operation(float(x), float(y)))
-            return Series[float | None](data)
+                    data_float.append(operation(float(x), float(y)))
+            return Series[float | None](data_float)
 
         else:  # return int Series
-            data: list[int | None] = []
+            data_int: list[int | None] = []
             for x, y in zip(self.data, other.data):
                 if x is None or y is None:
-                    data.append(None)
+                    data_int.append(None)
                 else:
-                    data.append(operation(x, y))
-            return Series[int | None](data)
+                    data_int.append(operation(x, y))
+            return Series[int | None](data_int)
 
     def __add__(self, other: Self) -> Self:
         return self._math_helper_function(other, lambda x, y: x + y)
