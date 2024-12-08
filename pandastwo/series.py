@@ -8,11 +8,12 @@ class Series[LT]:  # LT is a Generic Type for list type
     def __init__(self, data: list[LT]) -> None:
         if not data:
             raise ValueError("data cannot be empty")
-        if len(data) == 0:  # NOT SURE ABOUT THIS
-            raise ValueError("data cannot be empty")
+        # an empty list is allowed as data because in the future we might want to start
+        # with an empty list and add data later.
 
         data_type = self._find_data_type(data)
         self.data_type: type[LT] = data_type
+        self._check_data_type_allowed(data_type)
         self._check_data_type(data, data_type)
         self.data: list[LT] = data
 
@@ -23,6 +24,12 @@ class Series[LT]:  # LT is a Generic Type for list type
         raise ValueError(
             "data cannot be consist of only None types"
         )  # is this a proper assumption?
+
+    def _check_data_type_allowed(self, data_type: Type[LT]) -> None:
+        if data_type not in [int, float, bool, str]:
+            raise ValueError(
+                f"Data type not allowed. (currently: {data_type.__name__}), allowed are: int, float, bool, str"
+            )
 
     def _check_data_type(self, data: list[LT], expected_type: Type[LT]) -> None:
         if not all(isinstance(x, expected_type) or x is None for x in data):

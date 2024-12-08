@@ -535,4 +535,30 @@ def test_invert_expected():
     assert c == Series([1])
 
 
-test_square_brackets_bool_list_with_none()
+def test_unallowed_datatype():
+    class CustomType:
+        pass
+
+    with pytest.raises(ValueError):
+        Series([CustomType(), CustomType()])
+
+    with pytest.raises(ValueError):
+        Series([1, 2, CustomType()])
+
+    with pytest.raises(ValueError):
+        Series([CustomType(), None])
+
+    with pytest.raises(ValueError):
+        Series([1, 2, 3, CustomType()])
+
+    with pytest.raises(ValueError):
+        Series([1.0, 2.0, 3.0, CustomType()])
+
+    with pytest.raises(ValueError):
+        Series([True, False, CustomType()])
+
+    with pytest.raises(ValueError):
+        Series([1, 2, 3, float("nan")])
+
+    # float inf is allowed -> might lead to errors though.
+    # Is allowed for now, but should be discussed.
