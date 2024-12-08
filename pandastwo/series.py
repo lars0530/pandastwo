@@ -26,7 +26,9 @@ class Series[LT]:  # LT is a Generic Type for list type
 
     def _check_data_type(self, data: list[LT], expected_type: Type[LT]) -> None:
         if not all(isinstance(x, expected_type) or x is None for x in data):
-            raise ValueError(f"data must be a list of {expected_type.__name__} or None")
+            raise ValueError(
+                f"The data must be a of a single type or None. (currently: {expected_type.__name__} or None)"
+            )
 
     @overload
     def __getitem__(self, index: int) -> LT: ...
@@ -39,7 +41,7 @@ class Series[LT]:  # LT is a Generic Type for list type
         if not isinstance(index, int) and not isinstance(
             index, Series
         ):  # ideally check if isinstance(index, Series[bool])
-            raise ValueError("index must be an integer or a list of booleans")
+            raise ValueError("index must be an integer or a Series of booleans")
 
         if isinstance(index, int):
             if index < 0 or index >= len(self.data):
