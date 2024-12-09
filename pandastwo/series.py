@@ -28,7 +28,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
         )  # is this a proper assumption? -> for the time being, yes
 
     def _check_data_type_allowed(self, data_type: Type[ST]) -> None:
-        if data_type not in [int, float, bool, str]:
+        if data_type not in {int, float, bool, str}:
             raise ValueError(
                 f"Data type not allowed. (currently: {data_type.__name__}), allowed are: int, float, bool, str"
             )
@@ -99,7 +99,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
             raise ValueError("Only Series can be operated with another Series")
         if len(self) != len(other):
             raise ValueError("Series must have the same length")
-        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+        if self.data_type not in {int, float} or other.data_type not in {int, float}:
             raise ValueError("Series must have numeric data types to be operated")
 
         # cast to float if any of the data types is float
@@ -142,10 +142,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
             raise ValueError("Only Series can be compared using equality operations")
         if len(self) != len(other):
             raise ValueError("Series must have the same length")
-        if self.data_type not in [int, float] or other.data_type not in [int, float]:
-            raise ValueError("Series must have numeric data types to be added")
-        # check if both data types are numeric
-        if self.data_type not in [int, float] or other.data_type not in [int, float]:
+        if self.data_type not in {int, float} or other.data_type not in {int, float}:
             raise ValueError("Series must have numeric data types to be added")
 
         data: list[bool | None] = []
