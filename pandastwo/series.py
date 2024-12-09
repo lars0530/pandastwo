@@ -1,15 +1,11 @@
-# %%
-import sys
-
-sys.path.append("../")  # ONLY for IPython kernel
 from collections.abc import Callable
 from typing import Self, Type, overload
 
 
-class Series[LT]:  # LT is a Generic Type for list type
+class Series[ST]:  # ST is a Generic Type for Series type
     """stores data in a one-dimensional array"""
 
-    def __init__(self, data: list[LT]) -> None:
+    def __init__(self, data: list[ST]) -> None:
         # currently data cannot be empty because there is no way to add data and an empty DataFrame is not useful
         # this should be changed in the future when adding data is implemented
         if not data:
@@ -18,12 +14,12 @@ class Series[LT]:  # LT is a Generic Type for list type
             raise ValueError("data must be of type list")
 
         data_type = self._find_data_type(data)
-        self.data_type: type[LT] = data_type
+        self.data_type: type[ST] = data_type
         self._check_data_type_allowed(data_type)
         self._check_data_type(data, data_type)
-        self.data: list[LT] = data
+        self.data: list[ST] = data
 
-    def _find_data_type(self, data: list[LT]) -> Type[LT]:
+    def _find_data_type(self, data: list[ST]) -> Type[ST]:
         for x in data:
             if x is not None:
                 return type(x)
@@ -31,26 +27,26 @@ class Series[LT]:  # LT is a Generic Type for list type
             "data cannot be consist of only None types"
         )  # is this a proper assumption?
 
-    def _check_data_type_allowed(self, data_type: Type[LT]) -> None:
+    def _check_data_type_allowed(self, data_type: Type[ST]) -> None:
         if data_type not in [int, float, bool, str]:
             raise ValueError(
                 f"Data type not allowed. (currently: {data_type.__name__}), allowed are: int, float, bool, str"
             )
 
-    def _check_data_type(self, data: list[LT], expected_type: Type[LT]) -> None:
+    def _check_data_type(self, data: list[ST], expected_type: Type[ST]) -> None:
         if not all(isinstance(x, expected_type) or x is None for x in data):
             raise ValueError(
                 f"The data must be a of a single type or None. (currently: {expected_type.__name__} or None)"
             )
 
     @overload
-    def __getitem__(self, index: int) -> LT: ...
+    def __getitem__(self, index: int) -> ST: ...
     @overload
     def __getitem__(self, index: Self) -> Self: ...
 
     def __getitem__(
         self, index: int | Self
-    ) -> LT | "Series":  # should be int |Series[self] -> LT | Series[LT]
+    ) -> ST | "Series":  # should be int |Series[self] -> ST | Series[ST]
         if not isinstance(index, int) and not isinstance(
             index, Series
         ):  # ideally check if isinstance(index, Series[bool])
