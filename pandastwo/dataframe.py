@@ -45,7 +45,7 @@ class DataFrame:
         ):  # ideally check if not isinstance(key, Series[bool]), but this is not possible
             if len(key) != len(next(iter(self.data.values()))):
                 raise ValueError("key must have the same length as the data")
-            for k in key:
+            for k in key.data:
                 if k is not None and not isinstance(
                     k, bool
                 ):  # if k is neither None nor bool

@@ -25,7 +25,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
                 return type(x)
         raise ValueError(
             "data cannot be consist of only None types"
-        )  # is this a proper assumption?
+        )  # is this a proper assumption? -> for the time being, yes
 
     def _check_data_type_allowed(self, data_type: Type[ST]) -> None:
         if data_type not in [int, float, bool, str]:
