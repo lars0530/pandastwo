@@ -1,7 +1,3 @@
-# %%
-import sys
-
-sys.path.append("../")  # ONLY for IPython kernel
 from pandastwo.series import Series
 
 
@@ -44,17 +40,18 @@ class DataFrame:
             key, Series
         ):  # ideally check if not isinstance(key, Series[bool]), but this is not possible
             if len(key) != len(next(iter(self.data.values()))):
-                raise ValueError("key must have the same length as the data")
+                raise ValueError(
+                    "Boolean Series key must have the same length as the data"
+                )
             for k in key.data:
                 if k is not None and not isinstance(
                     k, bool
-                ):  # if k is neither None nor bool
-                    raise ValueError("list must contain only booleans or None type")
+                ):  # if k is neither None nor bool -> unallowed type
+                    raise ValueError(
+                        "Boolean Series key must contain only booleans or None type"
+                    )
 
             return DataFrame({k: self.data[k][key] for k in self.data.keys()})
 
     def __repr__(self):
         return str(self.data)
-
-
-# %%

@@ -200,5 +200,4 @@ class Series[ST]:  # ST is a Generic Type for Series type
     def __invert__(self) -> Self:
         if self.data_type is not bool:
             raise ValueError("Series must have the data type bool to be inverted")
-        y = Series([not x if x is not None else None for x in self.data])
-        return y
+        return Series([not x if x is not None else None for x in self.data])
