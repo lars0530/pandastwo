@@ -65,4 +65,8 @@ class DataFrame:
             return DataFrame({k: self.data[k][key] for k in self.data.keys()})
 
     def __repr__(self):
-        return str(self.data)
+        repr_str = "{\n"
+        for key, series in self.data.items():
+            repr_str += f"  '{key}': {series} (datatype: {series.data_type}),\n"
+        repr_str += "}"
+        return repr_str
