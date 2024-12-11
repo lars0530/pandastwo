@@ -1,3 +1,4 @@
+from typing import Self, overload
 from pandastwo.series import Series
 
 
@@ -25,7 +26,12 @@ class DataFrame:
         if len(set(lengths.values())) > 1:
             raise ValueError("all Series must have the same length")
 
-    def __getitem__(self, key: str | Series) -> "DataFrame":
+    @overload
+    def __getitem__(self, index: str) -> Series: ...
+    @overload
+    def __getitem__(self, index: Series) -> Self: ...
+
+    def __getitem__(self, key: str | Series) -> Series | Self:
         if not isinstance(key, str) and not isinstance(
             key, Series
         ):  # ideally check if not isinstance(key, Series[bool])

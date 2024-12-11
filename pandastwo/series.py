@@ -46,7 +46,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
 
     def __getitem__(
         self, index: int | Self
-    ) -> ST | "Series":  # should be int |Series[self] -> ST | Series[ST]
+    ) -> ST | Self:  # should be int | Series[bool] -> ST | Series[ST]
         if not isinstance(index, int) and not isinstance(
             index, Series
         ):  # ideally check if isinstance(index, Series[bool])
