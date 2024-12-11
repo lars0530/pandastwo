@@ -1,3 +1,5 @@
+# %%
+
 from typing import Self, overload
 from pandastwo.series import Series
 
@@ -35,34 +37,34 @@ class DataFrame:
     @overload
     def __getitem__(self, index: Series) -> Self: ...
 
-    def __getitem__(self, key: str | Series) -> Series | Self:
-        if not isinstance(key, str) and not isinstance(
-            key, Series
-        ):  # ideally check if not isinstance(key, Series[bool])
+    def __getitem__(self, index: str | Series) -> Series | Self:
+        if not isinstance(index, str) and not isinstance(
+            index, Series
+        ):  # ideally check if not isinstance(index, Series[bool])
             raise ValueError(
-                f"a dataframe key must be a string or a Series of booleans (found: {type(key)})"
+                f"a dataframe index must be a string or a Series of booleans (found: {type(index)})"
             )
 
-        if isinstance(key, str):
-            if key not in self.data.keys():
-                raise KeyError(f"key {key} not found in dataframe")
-            return self.data[key]
+        if isinstance(index, str):
+            if index not in self.data.keys():
+                raise KeyError(f"key {index} not found in dataframe")
+            return self.data[index]
 
         if isinstance(
-            key, Series
-        ):  # ideally check if not isinstance(key, Series[bool]), but this is not possible
-            if len(key) != len(next(iter(self.data.values()))):
+            index, Series
+        ):  # ideally check if not isinstance(index, Series[bool]), but this is not possible
+            if len(index) != len(next(iter(self.data.values()))):
                 raise ValueError(
-                    f"Boolean Series key must have the same length as the data (key length: {len(key)}, data length: {len(list(self.data.values())[0])})"
+                    f"Boolean Series index must have the same length as the data (index length: {len(index)}, data length: {len(list(self.data.values())[0])})"
                 )
-            for k in key.data:
+            for k in index.data:
                 if k is not None and not isinstance(
                     k, bool
                 ):  # if k is neither None nor bool -> unallowed type
                     raise ValueError(
-                        f"Boolean Series key must contain only booleans or None type (found: {type(k)})"
+                        f"Boolean Series index must contain only booleans or None type (found: {type(k)})"
                     )
-            return DataFrame({k: self.data[k][key] for k in self.data.keys()})
+            return DataFrame({k: self.data[k][index] for k in self.data.keys()})
 
     def __repr__(self):
         repr_str = "{\n"
