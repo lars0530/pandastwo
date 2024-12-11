@@ -1,3 +1,4 @@
+# %%
 from collections.abc import Callable
 from typing import Self, Type, overload
 
@@ -30,13 +31,13 @@ class Series[ST]:  # ST is a Generic Type for Series type
     def _check_data_type_allowed(self, data_type: Type[ST]) -> None:
         if data_type not in {int, float, bool, str}:
             raise ValueError(
-                f"Data type not allowed. (currently: {data_type.__name__}), allowed are: int, float, bool, str"
+                f"Data type not allowed. (currently: {data_type}), allowed are: int, float, bool, str"
             )
 
     def _check_data_type(self, data: list[ST], expected_type: Type[ST]) -> None:
         if not all(isinstance(x, expected_type) or x is None for x in data):
             raise ValueError(
-                f"The data must be a of a single type or None. (currently: {expected_type.__name__} or None)"
+                f"The data must be a of a single type or None. (currently: {expected_type} or None)"
             )
 
     @overload
@@ -74,7 +75,9 @@ class Series[ST]:  # ST is a Generic Type for Series type
         # should be other: Series -> Series[bool], but mypy doesn't like that
         # fail hard for different lengths
         if not isinstance(other, Series):
-            raise ValueError("Only Series can be compared using equality operations")
+            raise ValueError(
+                f"Only Series can be compared using equality operations (found {type(other)})"
+            )
         if len(self) != len(other):
             raise ValueError("Series must have the same length")
         # fail hard for different types
@@ -96,11 +99,17 @@ class Series[ST]:  # ST is a Generic Type for Series type
             # if other is a scalar, make it a Series and continue operation
             other = Series([other for _ in self.data])
         if not isinstance(other, Series):
-            raise ValueError("Only Series can be operated with another Series")
+            raise ValueError(
+                f"Only Series can be operated with another Series (found {type(other)})"
+            )
         if len(self) != len(other):
-            raise ValueError("Series must have the same length")
+            raise ValueError(
+                f"Series must have the same length (found {len(self)} and {len(other)})"
+            )
         if self.data_type not in {int, float} or other.data_type not in {int, float}:
-            raise ValueError("Series must have numeric data types to be operated")
+            raise ValueError(
+                f"Series must have numeric data types to do math operations (found {self.data_type} and {other.data_type})"
+            )
 
         # cast to float if any of the data types is float
         if self.data_type is float or other.data_type is float or force_float:
@@ -139,7 +148,9 @@ class Series[ST]:  # ST is a Generic Type for Series type
             # if other is a scalar, make it a Series and continue add operation
             other = Series([other for _ in self.data])
         if not isinstance(other, Series):
-            raise ValueError("Only Series can be compared using equality operations")
+            raise ValueError(
+                f"Only Series can be compared using equality operations (found {type(other)})"
+            )
         if len(self) != len(other):
             raise ValueError("Series must have the same length")
         if self.data_type not in {int, float} or other.data_type not in {int, float}:
@@ -176,7 +187,9 @@ class Series[ST]:  # ST is a Generic Type for Series type
         self, other: Self, operation: Callable
     ) -> Self:
         if not isinstance(other, Series):
-            raise ValueError("Only Series can be compared using equality operations")
+            raise ValueError(
+                f"Only Series can be compared using equality operations (found {type(other)})"
+            )
         if len(self) != len(other):
             raise ValueError("Series must have the same length")
         if self.data_type is not bool or other.data_type is not bool:
