@@ -24,7 +24,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
         if not data:
             raise ValueError("data cannot be empty")
         if not isinstance(data, list):
-            raise ValueError("data must be of type list")
+            raise ValueError(f"data must be of type list (found {type(data)})")
 
         data_type = self._find_data_type(data)
         self.data_type: type[ST] = data_type
@@ -124,21 +124,29 @@ class Series[ST]:  # ST is a Generic Type for Series type
             If the integer index is out of range.
         """
         if not isinstance(index, int) and not isinstance(index, Series):
-            raise ValueError("index must be an integer or a Series of booleans")
+            raise ValueError(
+                f"index must be an integer or a Series of booleans (found {type(index)})"
+            )
 
         if isinstance(index, int):
             if index < 0 or index >= len(self.data):
-                raise IndexError("index out of range")
+                raise IndexError(
+                    f"index out of range (index: {index}, length: {len(self.data)})"
+                )
             return self.data[index]
 
         if isinstance(index, Series):
             if len(index) != len(self.data):
-                raise ValueError("index must have the same length as the data")
+                raise ValueError(
+                    f"index must have the same length as the data (index length: {len(index)}, data length: {len(self.data)})"
+                )
             for i in index.data:
                 if i is not None and not isinstance(
                     i, bool
                 ):  # if i is neither None nor bool
-                    raise ValueError("Series must contain only booleans or None")
+                    raise ValueError(
+                        f"Series must contain only booleans or None (found: {type(i)})"
+                    )
             return Series([self.data[i] for i in range(len(index)) if index[i] is True])
 
     def __len__(self) -> int:
@@ -176,9 +184,13 @@ class Series[ST]:  # ST is a Generic Type for Series type
                 f"Only Series can be compared using equality operations (found {type(other)})"
             )
         if len(self) != len(other):
-            raise ValueError("Series must have the same length")
+            raise ValueError(
+                f"Series must have the same length for equality operations (found {len(self)} and {len(other)})"
+            )
         if self.data_type != other.data_type:
-            raise ValueError("Series must have the same data type")
+            raise ValueError(
+                f"Series must have the same data type for equality operations (found {self.data_type} and {other.data_type})"
+            )
 
         return Series([x == y for x, y in zip(self.data, other.data)])
 
@@ -219,7 +231,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
             )
         if len(self) != len(other):
             raise ValueError(
-                f"Series must have the same length (found {len(self)} and {len(other)})"
+                f"Series must have the same length for mathematical operations (found {len(self)} and {len(other)})"
             )
         if self.data_type not in {int, float} or other.data_type not in {int, float}:
             raise ValueError(
@@ -338,9 +350,13 @@ class Series[ST]:  # ST is a Generic Type for Series type
                 f"Only Series can be compared using equality operations (found {type(other)})"
             )
         if len(self) != len(other):
-            raise ValueError("Series must have the same length")
+            raise ValueError(
+                f"Series must have the same length for equality operations (found {len(self)} and {len(other)})"
+            )
         if self.data_type not in {int, float} or other.data_type not in {int, float}:
-            raise ValueError("Series must have numeric data types to be added")
+            raise ValueError(
+                f"Series must have numeric data types to be added (found {self.data_type} and {other.data_type})"
+            )
 
         data: list[bool | None] = []
         for x, y in zip(self.data, other.data):
@@ -469,10 +485,12 @@ class Series[ST]:  # ST is a Generic Type for Series type
                 f"Only Series can be compared using equality operations (found {type(other)})"
             )
         if len(self) != len(other):
-            raise ValueError("Series must have the same length")
+            raise ValueError(
+                f"Series must have the same length to do boolean operations (found {len(self)} and {len(other)})"
+            )
         if self.data_type is not bool or other.data_type is not bool:
             raise ValueError(
-                "Series must have the same data type bool, currently: {self.data_type} and {other.data_type}"
+                f"Series must have the same data type bool, currently: {self.data_type} and {other.data_type}"
             )
         return Series([operation(x, y) for x, y in zip(self.data, other.data)])
 
@@ -539,5 +557,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
             If the Series data type is not boolean.
         """
         if self.data_type is not bool:
-            raise ValueError("Series must have the data type bool to be inverted")
+            raise ValueError(
+                f"Series must have the data type bool to be inverted (found: {self.data_type})"
+            )
         return Series([not x if x is not None else None for x in self.data])
