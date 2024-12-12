@@ -30,6 +30,9 @@ class Series[ST]:  # ST is a Generic Type for Series type
         self.data_type: type[ST] = data_type
         self._check_data_type_allowed(data_type)
         self._check_data_type(data, data_type)
+        # If performance is to be increased, data could be stored in a numpy array
+        # All operations would then be done using numpy functions
+        # This would increase performance significantly especially for large Series
         self.data: list[ST] = data
 
     def _find_data_type(self, data: list[ST]) -> Type[ST]:
@@ -103,6 +106,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
     def __getitem__(self, index: Self) -> Self: ...
 
     def __getitem__(self, index: int | Self) -> ST | Self:
+        # TODO: add support for numpy arrays for performance (boolean masking is more efficient with numpy)
         """
         Retrieves elements from the Series based on an integer index or a boolean Series.
 
@@ -161,6 +165,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
         return len(self.data)
 
     def __eq__(self, other: object) -> Self:
+        # TODO: add support for numpy arrays for performance
         """
         Compares the Series for equality with another Series element-wise.
 
@@ -200,6 +205,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
         operation: Callable,  # Callable[[float, float], float] | Callable[[int, int], int]
         force_float: bool = False,
     ) -> Self:
+        # TODO: add support for numpy arrays for performance (thus for all mathematical operations)
         """
         Helper function to perform element-wise arithmetic operations.
 
@@ -322,6 +328,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
         return self._math_helper_function(other, lambda x, y: x / y, force_float=True)
 
     def _eq_helper_function(self, other: Self, operation: Callable) -> Self:
+        # TODO: add support for numpy arrays for performance (thus for all comparison operations)
         """
         Helper function for element-wise comparison operations.
 
@@ -460,6 +467,7 @@ class Series[ST]:  # ST is a Generic Type for Series type
     def _element_wise_bool_helper_function(
         self, other: Self, operation: Callable
     ) -> Self:
+        # TODO: add support for numpy arrays for performance
         """
         Perform element-wise boolean operation between two Series.
 

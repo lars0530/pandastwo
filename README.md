@@ -55,6 +55,9 @@ cd pandastwo
 # create new virtual environment
 uv venv
 
+# activate virtual environment
+source .venv/bin/activate
+
 # install dependencies
 uv sync --dev
 
